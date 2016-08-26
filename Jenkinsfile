@@ -1,18 +1,19 @@
-node {
-   // Mark the code checkout 'stage'....
-   stage 'Checkout'
-
-   // Get some code from a GitHub repository
-   git url: 'https://github.com/j-coll-test/jenkins-test.git'
-
-   // Get the maven tool.
-   // ** NOTE: This 'M3' maven tool must be configured
-   // **       in the global configuration.           
-   //def mvnHome = tool 'M3'
-
-   // Mark the code build 'stage'....
-   stage 'Build'
-   // Run the maven build
-   sh "mvn clean package"
-   step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
+node('remote') {
+  git url: 'https://github.com/jenkinsci/parallel-test-executor-plugin-sample.git'
+  archive 'pom.xml, src/'
 }
+def splits = splitTests([$class: 'CountDrivenParallelism', size: 2])
+def branches = [:]
+for (int i = 0; i < splits.size(); i++) {
+  def exclusions = splits.get(i);
+  branches["split${i}"] = {
+    node('remote') {
+      sh 'rm -rf *'
+      unarchive mapping: ['pom.xml' : '.', 'src/' : '.']
+      writeFile file: 'exclusions.txt', text: exclusions.join("\n")
+      sh "${tool 'M3'}/bin/mvn -B -Dmaven.test.failure.ignore test"
+      step([$class: 'JUnitResultArchiver', testResults: 'target/surefire-reports/*.xml'])
+    }
+  }
+}
+parallel branches
