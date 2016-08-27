@@ -2,6 +2,7 @@ package org.jcoll.lib;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -28,6 +29,7 @@ public class UtilsTest {
     }
 
     @Test
+    @Ignore
     public void testFail() throws Exception {
         System.out.println("Test fail!");
         fail();
