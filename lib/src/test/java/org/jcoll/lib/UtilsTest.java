@@ -29,6 +29,12 @@ public class UtilsTest {
 
     @Test
     public void testFail() throws Exception {
+        System.out.println("Test fail!");
+        fail();
+    }
+
+    @Test
+    public void testFailEnv() throws Exception {
         String env = System.getenv("FAIL");
         if (env != null) {
             System.out.println("Test nok!");
