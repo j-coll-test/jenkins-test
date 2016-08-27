@@ -29,7 +29,7 @@ public class UtilsTest {
     }
 
     @Test
-    @Ignore
+//    @Ignore
     public void testFail() throws Exception {
         System.out.println("Test fail!");
         fail();
