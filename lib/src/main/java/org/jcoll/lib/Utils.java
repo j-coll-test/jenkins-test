@@ -7,8 +7,15 @@ package org.jcoll.lib;
  */
 public class Utils {
 
+    public static final String MESSAGE = "Hello world!";
+    private final String message;
+
+    public Utils() {
+        message = MESSAGE;
+    }
+
     public void helloWorld() {
-        System.out.println("Hello world!");
+        System.out.println(message);
     }
 
 }
