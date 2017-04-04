@@ -11,4 +11,8 @@ public class Utils {
         System.out.println("Hello world!");
     }
 
+    public void helloWorldError() {
+        System.err.println("Hello world!");
+    }
+
 }
